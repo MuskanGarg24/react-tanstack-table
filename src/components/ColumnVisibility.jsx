@@ -21,7 +21,7 @@ const ColumnVisibility = ({ table }) => {
           className="border-2 border-gray-100 mb-3 p-3 rounded-lg"
         >
           <label className="flex justify-between">
-            {column.id}
+            {column.columnDef.header}
             <input
               type="checkbox"
               className="w-4 h-4 rounded-xl"

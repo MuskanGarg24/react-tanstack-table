@@ -2,6 +2,7 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import ColumnVisibility from "./ColumnVisibility";
+import Sorting from "./Sorting";
 
 const Sidebar = ({ open, toggleSidebar, table, featureName }) => {
   return (
@@ -56,6 +57,9 @@ const Sidebar = ({ open, toggleSidebar, table, featureName }) => {
                   <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
                     {featureName == "column visibility" && (
                       <ColumnVisibility table={table} />
+                    )}
+                    {featureName == "Sorting" && (
+                      <Sorting table={table} toggleSidebar={toggleSidebar} />
                     )}
                   </div>
                 </Dialog.Panel>

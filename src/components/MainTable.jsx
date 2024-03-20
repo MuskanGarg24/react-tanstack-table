@@ -5,6 +5,7 @@ import {
   useReactTable,
   getFilteredRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
 } from "@tanstack/react-table";
 import Tdata from "../data/data";
 import Sidebar from "./Sidebar";
@@ -15,6 +16,7 @@ const MainTable = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [globalFilter, setGlobalFilter] = useState("");
   const [featureName, setFeatureName] = useState("");
+  const [sorting, setSorting] = useState([]);
 
   useEffect(() => {
     setData(Tdata);
@@ -69,12 +71,15 @@ const MainTable = () => {
     state: {
       columnVisibility,
       globalFilter,
+      sorting,
     },
     onColumnVisibilityChange: setColumnVisibility,
     onGlobalFilterChange: setGlobalFilter,
+    onSortingChange: setSorting,
     getFilteredRowModel: getFilteredRowModel(),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
   });
 
   const toggleSideBarVisibility = (name) => {
@@ -83,7 +88,7 @@ const MainTable = () => {
   };
 
   return (
-    <div className="w-[90vw] mx-auto mt-36">
+    <div className="w-[90vw] mx-auto mt-14">
       <Sidebar
         open={sidebarOpen}
         toggleSidebar={toggleSideBarVisibility}
@@ -103,6 +108,12 @@ const MainTable = () => {
           onClick={() => toggleSideBarVisibility("column visibility")}
         >
           Show/Hide Columns
+        </button>
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded-md"
+          onClick={() => toggleSideBarVisibility("Sorting")}
+        >
+          Sorting
         </button>
       </div>
       <div className="px-4 sm:px-6 lg:px-8 mb-16">
