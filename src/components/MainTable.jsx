@@ -3,6 +3,8 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  getFilteredRowModel,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
 import Tdata from "../data/data";
 import Sidebar from "./Sidebar";
@@ -11,6 +13,7 @@ const MainTable = () => {
   const [data, setData] = useState(Tdata);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [globalFilter, setGlobalFilter] = useState("");
   const [featureName, setFeatureName] = useState("");
 
   useEffect(() => {
@@ -65,9 +68,13 @@ const MainTable = () => {
     columns,
     state: {
       columnVisibility,
+      globalFilter,
     },
     onColumnVisibilityChange: setColumnVisibility,
+    onGlobalFilterChange: setGlobalFilter,
+    getFilteredRowModel: getFilteredRowModel(),
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   const toggleSideBarVisibility = (name) => {
@@ -83,7 +90,14 @@ const MainTable = () => {
         table={table}
         featureName={featureName}
       />
-      <div className="flex justify-end">
+      <div className="flex justify-end space-x-5">
+        <input
+          type="text"
+          value={globalFilter ?? ""}
+          className="p-2 font-lg shadow border border-block"
+          placeholder="Search all columns..."
+          onChange={(e) => setGlobalFilter(e.target.value)}
+        />
         <button
           className="px-4 py-2 bg-blue-500 text-white rounded-md"
           onClick={() => toggleSideBarVisibility("column visibility")}
@@ -91,7 +105,7 @@ const MainTable = () => {
           Show/Hide Columns
         </button>
       </div>
-      <div className="px-4 sm:px-6 lg:px-8">
+      <div className="px-4 sm:px-6 lg:px-8 mb-16">
         <div className="mt-8 flow-root">
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -124,6 +138,32 @@ const MainTable = () => {
               </table>
             </div>
           </div>
+        </div>
+      </div>
+      <div>
+        {/* pagination from 1 to 10 */}
+        <div className="flex justify-center space-x-2 mb-9">
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            onClick={() => table.setPageIndex(0)}
+          >
+            1
+          </button>
+          {Array.from({ length: 8 }, (_, i) => i + 2).map((page) => (
+            <button
+              key={page}
+              className="px-4 py-2 bg-blue-500 text-white rounded-md"
+              onClick={() => table.setPageIndex(page - 1)}
+            >
+              {page}
+            </button>
+          ))}
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+          >
+            10
+          </button>
         </div>
       </div>
     </div>
