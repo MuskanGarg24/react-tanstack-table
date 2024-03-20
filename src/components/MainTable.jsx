@@ -5,9 +5,13 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import Tdata from "../data/data";
+import Sidebar from "./Sidebar";
 
 const MainTable = () => {
   const [data, setData] = useState(Tdata);
+  const [columnVisibility, setColumnVisibility] = useState({});
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [featureName, setFeatureName] = useState("");
 
   useEffect(() => {
     setData(Tdata);
@@ -59,11 +63,34 @@ const MainTable = () => {
   const table = useReactTable({
     data,
     columns,
+    state: {
+      columnVisibility,
+    },
+    onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const toggleSideBarVisibility = (name) => {
+    setFeatureName(name);
+    setSidebarOpen(!sidebarOpen);
+  };
+
   return (
     <div className="w-[90vw] mx-auto mt-36">
+      <Sidebar
+        open={sidebarOpen}
+        toggleSidebar={toggleSideBarVisibility}
+        table={table}
+        featureName={featureName}
+      />
+      <div className="flex justify-end">
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded-md"
+          onClick={() => toggleSideBarVisibility("column visibility")}
+        >
+          Show/Hide Columns
+        </button>
+      </div>
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="mt-8 flow-root">
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
