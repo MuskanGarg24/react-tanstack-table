@@ -1,12 +1,12 @@
+// Grouping component for grouping the table data based on a column
+
 import { useState } from "react";
 
 const Grouping = ({ table, toggleSidebar }) => {
+  // State to store the selected column id
   const [selectedColumnId, setSelectedColumnId] = useState("");
 
-  const handleColumnSelect = (event) => {
-    setSelectedColumnId(event.target.value);
-  };
-
+  // Function to apply grouping
   const applyGrouping = () => {
     if (selectedColumnId) {
       const column = table.getColumn(selectedColumnId);
@@ -17,6 +17,7 @@ const Grouping = ({ table, toggleSidebar }) => {
     }
   };
 
+  // Function to clear grouping
   const clearGrouping = () => {
     table.resetGrouping();
     toggleSidebar();
@@ -29,9 +30,9 @@ const Grouping = ({ table, toggleSidebar }) => {
         <select
           className="w-full p-3 border-2 border-gray-100 rounded-lg outline:none focus:outline-none"
           value={selectedColumnId}
-          onChange={handleColumnSelect}
+          onChange={(e) => setSelectedColumnId(e.target.value)}
         >
-          <option>Select a column</option>
+          <option>Select a Column</option>
           {table.getAllLeafColumns().map((column) => {
             if (
               column.columnDef.header === "Category" ||
@@ -48,7 +49,7 @@ const Grouping = ({ table, toggleSidebar }) => {
       </div>
       <div>
         <button
-          className="bg-blue-500 text-white px-4 py-3 rounded-lg w-full mb-5"
+          className="bg-white text-blue-500 border-2 border-blue-500 px-4 py-3 rounded-lg w-full mb-5 hover:bg-blue-500 hover:text-white transition duration-300"
           onClick={applyGrouping}
         >
           Apply Grouping

@@ -1,4 +1,6 @@
-import { Fragment, useState } from "react";
+// Sidebar component that renders the sidebar content based on the featureName prop
+
+import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import ColumnVisibility from "./ColumnVisibility";
@@ -57,6 +59,7 @@ const Sidebar = ({ open, toggleSidebar, table, featureName }) => {
                     </div>
                   </Transition.Child>
                   <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+                    {/* rendering the sidebar content based on the featureName prop */}
                     {featureName == "column visibility" && (
                       <ColumnVisibility table={table} />
                     )}

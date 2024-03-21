@@ -1,24 +1,64 @@
+// Component to filter date columns in the table
+
 import { useState } from "react";
-import Datepicker from "react-tailwindcss-datepicker";
+import dayjs from "dayjs";
 
 const DateFilter = ({ table, filterLabel }) => {
+  // Get the min and max date values for the column
   const getMinMaxDate = table.getColumn(filterLabel).getFacetedMinMaxValues();
 
-  console.log(getMinMaxDate);
+  // Set the initial state of the date filter
+  const [startDateValue, setStartDateValue] = useState(getMinMaxDate[0]);
+  const [endDateValue, setEndDateValue] = useState(getMinMaxDate[1]);
 
-  const [value, setValue] = useState({
-    startDate: getMinMaxDate[0],
-    endDate: getMinMaxDate[1],
-  });
+  // Function to check if the date is valid
+  function isValidDate(d) {
+    const parsedDate = new Date(d);
+    return parsedDate instanceof Date && !Number.isNaN(parsedDate);
+  }
 
-  const handleValueChange = (newValue) => {
-    setValue(newValue);
+  // Function to handle the change in the start date
+  function handleStartDateChange(value) {
+    if (isValidDate(value) && value !== "" && value !== "Invalid Date") {
+      setStartDateValue(value.target.value);
+      table
+        .getColumn(filterLabel)
+        .setFilterValue(() => [new Date(value.target.value), endDateValue]);
+    }
+  }
+
+  // Function to handle the change in the end date
+  function handleEndDateChange(value) {
+    if (isValidDate(value) && value !== "" && value !== "Invalid Date")
+      setEndDateValue(value.target.value);
     table
       .getColumn(filterLabel)
-      ?.setFilterValue([newValue.startDate, newValue.endDate]);
-  };
+      .setFilterValue(() => [startDateValue, new Date(value.target.value)]);
+  }
 
-  return <Datepicker value={value} onChange={handleValueChange} />;
+  return (
+    <div className="my-9">
+      <label className="block text-sm font-medium text-gray-900 mb-2">
+        {filterLabel.charAt(0).toUpperCase() + filterLabel.slice(1)}
+      </label>
+      <div className="flex space-x-5">
+        <input
+          name="startDate"
+          type="date"
+          onChange={handleStartDateChange}
+          value={
+            startDateValue ? dayjs(startDateValue).format("YYYY-MM-DD") : ""
+          }
+        />
+        <input
+          name="endDate"
+          type="date"
+          onChange={handleEndDateChange}
+          value={endDateValue ? dayjs(endDateValue).format("YYYY-MM-DD") : ""}
+        />
+      </div>
+    </div>
+  );
 };
 
 export default DateFilter;

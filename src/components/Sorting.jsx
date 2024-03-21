@@ -1,6 +1,8 @@
-import React from "react";
+// Sorting component for the sidebar
+import sortIcon from "../assets/sort.png";
 
 const Sorting = ({ table, toggleSidebar }) => {
+  // Function to clear sorting
   const clearSorting = () => {
     table.resetSorting();
     toggleSidebar();
@@ -18,12 +20,12 @@ const Sorting = ({ table, toggleSidebar }) => {
             >
               <label className="flex justify-between">
                 {column.columnDef.header}
-                <button
-                  className="px-2 py-1 bg-blue-500 text-white rounded-md"
+                <img
+                  src={sortIcon}
+                  alt="sort"
+                  className="w-4 h-4 cursor-pointer mt-1"
                   onClick={() => column.toggleSorting()}
-                >
-                  Sort
-                </button>
+                />
               </label>
             </div>
           );

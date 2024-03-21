@@ -1,8 +1,12 @@
-import React from "react";
+// Filters component to display filters for the table
+
+import NameFilter from "./NameFilter";
 import MultiSelectDropdownFilter from "./MultiSelectDropdownFilter";
 import NumberRangeFilter from "./NumberRangeFilter";
+import DateFilter from "./DateFilter";
 
 const Filters = ({ table, toggleSidebar }) => {
+  // Function to clear all filters
   const clearFilters = () => {
     table.resetColumnFilters();
     toggleSidebar();
@@ -12,45 +16,12 @@ const Filters = ({ table, toggleSidebar }) => {
     <div className="p-5">
       <h1 className="font-bold text-lg mb-9">Filters</h1>
       <div className="my-5">
-        <div>
-          <label className="block text-sm font-medium text-gray-900">
-            Name
-          </label>
-          <div className="mt-2">
-            <input
-              type="text"
-              className="block w-full rounded-md p-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300"
-              value={table.getColumn("name")?.getFilterValue() || ""}
-              onChange={(e) => {
-                table.getColumn("name")?.setFilterValue(e.target.value);
-              }}
-            />
-          </div>
-        </div>
-        <div className="my-5">
-          <label className="block text-sm font-medium text-gray-900 mb-2">
-            Category
-          </label>
-          <MultiSelectDropdownFilter table={table} filterLabel="category" />
-        </div>
-        <div className="my-5">
-          <label className="block text-sm font-medium text-gray-900 mb-2">
-            Subcategory
-          </label>
-          <MultiSelectDropdownFilter table={table} filterLabel="subcategory" />
-        </div>
-        <div className="my-5">
-          <label className="block text-sm font-medium text-gray-900 mb-2">
-            Price
-          </label>
-          <NumberRangeFilter table={table} filterLabel="price" />
-        </div>
-        <div className="my-5">
-          <label className="block text-sm font-medium text-gray-900 mb-2">
-            Sale Price
-          </label>
-          <NumberRangeFilter table={table} filterLabel="sale_price" />
-        </div>
+        <NameFilter table={table} />
+        <MultiSelectDropdownFilter table={table} filterLabel="category" />
+        <MultiSelectDropdownFilter table={table} filterLabel="subcategory" />
+        <NumberRangeFilter table={table} filterLabel="price" />
+        <NumberRangeFilter table={table} filterLabel="sale_price" />
+        <DateFilter table={table} filterLabel="createdAt" />
       </div>
       <div>
         <button

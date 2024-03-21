@@ -1,3 +1,5 @@
+// MainTable component to display the table and sidebar
+
 import { useEffect, useState } from "react";
 import {
   flexRender,
@@ -10,8 +12,41 @@ import {
   getFacetedUniqueValues,
   getFacetedMinMaxValues,
 } from "@tanstack/react-table";
-import Tdata from "../data/data";
 import Sidebar from "./Sidebar";
+import ToggleSidebarButtons from "./ToggleSidebarButtons";
+import Table from "./Table";
+import Pagination from "./Pagination";
+import dayjs from "dayjs";
+import Tdata from "../data/data";
+
+// Function to rank the item based on the value
+const fuzzyFilter = (row, columnId, value, addMeta) => {
+  const itemRank = rankItem(row.getValue(columnId), value);
+  addMeta({
+    itemRank,
+  });
+  return itemRank.passed;
+};
+
+// Function to rank the item based on the value
+const dateBetweenFilterFn = (row, columnId, value) => {
+  const date = row.getValue(columnId);
+  const [start, end] = value;
+  if ((start || end) && !date) return false;
+  if (start && !end) {
+    return new Date(date).getTime() >= new Date(start).getTime();
+  } else if (!start && end) {
+    return new Date(date).getTime() <= new Date(end).getTime();
+  } else if (start && end) {
+    return (
+      new Date(date).getTime() >= new Date(start).getTime() &&
+      new Date(date).getTime() <= new Date(end).getTime()
+    );
+  } else return true;
+};
+
+// Function to rank the item based on the value
+dateBetweenFilterFn.autoRemove;
 
 const MainTable = () => {
   const [data, setData] = useState(Tdata);
@@ -26,26 +61,6 @@ const MainTable = () => {
   useEffect(() => {
     setData(Tdata);
   }, []);
-
-  const formatDate = (dateString) => {
-    try {
-      const date = new Date(dateString);
-      if (isNaN(date.getTime())) {
-        return "";
-      }
-      const day = String(date.getDate()).padStart(2, "0");
-      const month = new Intl.DateTimeFormat("en", { month: "short" }).format(
-        date
-      );
-      const year = date.getFullYear();
-      const hours = String(date.getHours()).padStart(2, "0");
-      const minutes = String(date.getMinutes()).padStart(2, "0");
-      return `${day}-${month}-${year} ${hours}:${minutes}`;
-    } catch (error) {
-      console.error("Error formatting date:", error);
-      return "";
-    }
-  };
 
   const columns = [
     {
@@ -71,14 +86,14 @@ const MainTable = () => {
     {
       accessorKey: "createdAt",
       header: "Created At",
-      // cell: (props) => <p>{props.getValue()}</p>,
-      cell: (props) => <p>{formatDate(props.getValue())}</p>,
+      cell: (props) => dayjs(props.getValue()).format("DD/MM/YYYY"),
+      filterFn: "dateBetweenFilterFn",
     },
     {
       accessorKey: "updatedAt",
       header: "Updated At",
-      // cell: (props) => <p>{props.getValue()}</p>,
-      cell: (props) => <p>{formatDate(props.getValue())}</p>,
+      cell: (props) => dayjs(props.getValue()).format("DD/MM/YYYY"),
+      filterFn: "dateBetweenFilterFn",
     },
     {
       accessorKey: "price",
@@ -102,6 +117,11 @@ const MainTable = () => {
       grouping,
       columnFilters,
     },
+    filterFns: {
+      fuzzy: fuzzyFilter,
+      dateBetweenFilterFn: dateBetweenFilterFn,
+    },
+    globalFilterFn: fuzzyFilter,
     onColumnVisibilityChange: setColumnVisibility,
     onGlobalFilterChange: setGlobalFilter,
     onSortingChange: setSorting,
@@ -129,100 +149,13 @@ const MainTable = () => {
         table={table}
         featureName={featureName}
       />
-      <div className="flex justify-end space-x-5">
-        <input
-          type="text"
-          value={globalFilter ?? ""}
-          className="p-2 font-lg shadow border border-block"
-          placeholder="Search all columns..."
-          onChange={(e) => setGlobalFilter(e.target.value)}
-        />
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-md"
-          onClick={() => toggleSideBarVisibility("column visibility")}
-        >
-          Show/Hide Columns
-        </button>
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-md"
-          onClick={() => toggleSideBarVisibility("Sorting")}
-        >
-          Sorting
-        </button>
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-md"
-          onClick={() => toggleSideBarVisibility("Grouping")}
-        >
-          Grouping
-        </button>
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-md"
-          onClick={() => toggleSideBarVisibility("Filters")}
-        >
-          Filters
-        </button>
-      </div>
-      <div className="px-4 sm:px-6 lg:px-8 mb-16">
-        <div className="mt-8 flow-root">
-          <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-              <table className="min-w-full divide-y divide-gray-300">
-                <thead>
-                  {table.getHeaderGroups().map((headerGroup) => (
-                    <tr key={headerGroup.id}>
-                      {headerGroup.headers.map((header) => (
-                        <th key={header.id} className="text-center">
-                          {header.column.columnDef.header}
-                        </th>
-                      ))}
-                    </tr>
-                  ))}
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {table.getRowModel().rows.map((row) => (
-                    <tr key={row.id}>
-                      {row.getVisibleCells().map((cell) => (
-                        <td key={cell.id} className="text-center py-3">
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        {/* pagination from 1 to 10 */}
-        <div className="flex justify-center space-x-2 mb-9">
-          <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-md"
-            onClick={() => table.setPageIndex(0)}
-          >
-            1
-          </button>
-          {Array.from({ length: 8 }, (_, i) => i + 2).map((page) => (
-            <button
-              key={page}
-              className="px-4 py-2 bg-blue-500 text-white rounded-md"
-              onClick={() => table.setPageIndex(page - 1)}
-            >
-              {page}
-            </button>
-          ))}
-          <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-md"
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-          >
-            10
-          </button>
-        </div>
-      </div>
+      <ToggleSidebarButtons
+        toggleSidebar={toggleSideBarVisibility}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
+      />
+      <Table table={table} flexRender={flexRender} />
+      <Pagination table={table} />
     </div>
   );
 };
