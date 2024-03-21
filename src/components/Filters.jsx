@@ -1,7 +1,11 @@
 import React from "react";
+import MultiSelectDropdownFilter from "./MultiSelectDropdownFilter";
 
 const Filters = ({ table, toggleSidebar }) => {
-  console.log(table);
+  const clearFilters = () => {
+    table.resetColumnFilters();
+    toggleSidebar();
+  };
 
   return (
     <div className="p-5">
@@ -22,9 +26,24 @@ const Filters = ({ table, toggleSidebar }) => {
             />
           </div>
         </div>
+        <div className="my-5">
+          <label className="block text-sm font-medium text-gray-900 mb-2">
+            Category
+          </label>
+          <MultiSelectDropdownFilter table={table} filterLabel="category" />
+        </div>
+        <div className="my-5">
+          <label className="block text-sm font-medium text-gray-900 mb-2">
+            Subcategory
+          </label>
+          <MultiSelectDropdownFilter table={table} filterLabel="subcategory" />
+        </div>
       </div>
       <div>
-        <button className="bg-blue-500 text-white px-4 py-3 rounded-lg w-full">
+        <button
+          className="bg-blue-500 text-white px-4 py-3 rounded-lg w-full"
+          onClick={clearFilters}
+        >
           Clear Filters
         </button>
       </div>

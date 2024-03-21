@@ -66,7 +66,9 @@ const Sidebar = ({ open, toggleSidebar, table, featureName }) => {
                     {featureName == "Grouping" && (
                       <Grouping table={table} toggleSidebar={toggleSidebar} />
                     )}
-                    {featureName == "Filters" && <Filters table={table} />}
+                    {featureName == "Filters" && (
+                      <Filters table={table} toggleSidebar={toggleSidebar} />
+                    )}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

@@ -7,6 +7,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   getGroupedRowModel,
+  getFacetedUniqueValues,
 } from "@tanstack/react-table";
 import Tdata from "../data/data";
 import Sidebar from "./Sidebar";
@@ -88,6 +89,7 @@ const MainTable = () => {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getGroupedRowModel: getGroupedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
   const toggleSideBarVisibility = (name) => {
