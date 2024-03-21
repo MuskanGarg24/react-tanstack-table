@@ -28,16 +28,23 @@ const MainTable = () => {
   }, []);
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = new Intl.DateTimeFormat("en", { month: "short" }).format(
-      date
-    );
-    const year = date.getFullYear();
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-
-    return `${day}-${month}-${year} ${hours}:${minutes}`;
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        return "";
+      }
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = new Intl.DateTimeFormat("en", { month: "short" }).format(
+        date
+      );
+      const year = date.getFullYear();
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+      return `${day}-${month}-${year} ${hours}:${minutes}`;
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "";
+    }
   };
 
   const columns = [
