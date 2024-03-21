@@ -27,6 +27,19 @@ const MainTable = () => {
     setData(Tdata);
   }, []);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = new Intl.DateTimeFormat("en", { month: "short" }).format(
+      date
+    );
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    return `${day}-${month}-${year} ${hours}:${minutes}`;
+  };
+
   const columns = [
     {
       accessorKey: "id",
@@ -51,12 +64,14 @@ const MainTable = () => {
     {
       accessorKey: "createdAt",
       header: "Created At",
-      cell: (props) => <p>{props.getValue()}</p>,
+      // cell: (props) => <p>{props.getValue()}</p>,
+      cell: (props) => <p>{formatDate(props.getValue())}</p>,
     },
     {
       accessorKey: "updatedAt",
       header: "Updated At",
-      cell: (props) => <p>{props.getValue()}</p>,
+      // cell: (props) => <p>{props.getValue()}</p>,
+      cell: (props) => <p>{formatDate(props.getValue())}</p>,
     },
     {
       accessorKey: "price",
