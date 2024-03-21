@@ -3,6 +3,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import ColumnVisibility from "./ColumnVisibility";
 import Sorting from "./Sorting";
+import Grouping from "./Grouping";
+import Filters from "./Filters";
 
 const Sidebar = ({ open, toggleSidebar, table, featureName }) => {
   return (
@@ -61,6 +63,10 @@ const Sidebar = ({ open, toggleSidebar, table, featureName }) => {
                     {featureName == "Sorting" && (
                       <Sorting table={table} toggleSidebar={toggleSidebar} />
                     )}
+                    {featureName == "Grouping" && (
+                      <Grouping table={table} toggleSidebar={toggleSidebar} />
+                    )}
+                    {featureName == "Filters" && <Filters table={table} />}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

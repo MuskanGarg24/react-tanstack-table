@@ -6,6 +6,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  getGroupedRowModel,
 } from "@tanstack/react-table";
 import Tdata from "../data/data";
 import Sidebar from "./Sidebar";
@@ -17,6 +18,8 @@ const MainTable = () => {
   const [globalFilter, setGlobalFilter] = useState("");
   const [featureName, setFeatureName] = useState("");
   const [sorting, setSorting] = useState([]);
+  const [grouping, setGrouping] = useState([]);
+  const [columnFilters, setColumnFilters] = useState([]);
 
   useEffect(() => {
     setData(Tdata);
@@ -72,14 +75,19 @@ const MainTable = () => {
       columnVisibility,
       globalFilter,
       sorting,
+      grouping,
+      columnFilters,
     },
     onColumnVisibilityChange: setColumnVisibility,
     onGlobalFilterChange: setGlobalFilter,
     onSortingChange: setSorting,
+    onGroupingChange: setGrouping,
+    onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getGroupedRowModel: getGroupedRowModel(),
   });
 
   const toggleSideBarVisibility = (name) => {
@@ -114,6 +122,18 @@ const MainTable = () => {
           onClick={() => toggleSideBarVisibility("Sorting")}
         >
           Sorting
+        </button>
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded-md"
+          onClick={() => toggleSideBarVisibility("Grouping")}
+        >
+          Grouping
+        </button>
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded-md"
+          onClick={() => toggleSideBarVisibility("Filters")}
+        >
+          Filters
         </button>
       </div>
       <div className="px-4 sm:px-6 lg:px-8 mb-16">
