@@ -20,15 +20,6 @@ import dayjs from "dayjs";
 import Tdata from "../data/data";
 
 // Function to rank the item based on the value
-const fuzzyFilter = (row, columnId, value, addMeta) => {
-  const itemRank = rankItem(row.getValue(columnId), value);
-  addMeta({
-    itemRank,
-  });
-  return itemRank.passed;
-};
-
-// Function to rank the item based on the value
 const dateBetweenFilterFn = (row, columnId, value) => {
   const date = row.getValue(columnId);
   const [start, end] = value;
@@ -118,10 +109,8 @@ const MainTable = () => {
       columnFilters,
     },
     filterFns: {
-      fuzzy: fuzzyFilter,
       dateBetweenFilterFn: dateBetweenFilterFn,
     },
-    globalFilterFn: fuzzyFilter,
     onColumnVisibilityChange: setColumnVisibility,
     onGlobalFilterChange: setGlobalFilter,
     onSortingChange: setSorting,

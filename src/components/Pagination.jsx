@@ -3,7 +3,6 @@ import leftArrow from "../assets/leftArrow.png";
 import rightArrow from "../assets/rightArrow.png";
 
 const Pagination = ({ table }) => {
-  console.log(table);
   return (
     <div className="flex justify-center space-x-2 my-9">
       <button
