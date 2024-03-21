@@ -37,7 +37,7 @@ const DateFilter = ({ table, filterLabel }) => {
   }
 
   return (
-    <div className="my-9">
+    <div className="my-7">
       <label className="block text-sm font-medium text-gray-900 mb-2">
         {filterLabel.charAt(0).toUpperCase() + filterLabel.slice(1)}
       </label>
@@ -49,12 +49,14 @@ const DateFilter = ({ table, filterLabel }) => {
           value={
             startDateValue ? dayjs(startDateValue).format("YYYY-MM-DD") : ""
           }
+          className="w-full p-2 border-2 border-gray-200 rounded-md focus:ring-1 focus:ring-blue-500 focus:outline-none"
         />
         <input
           name="endDate"
           type="date"
           onChange={handleEndDateChange}
           value={endDateValue ? dayjs(endDateValue).format("YYYY-MM-DD") : ""}
+          className="w-full p-2 border-2 border-gray-200 rounded-md focus:ring-1 focus:ring-blue-500 focus:outline-none"
         />
       </div>
     </div>

@@ -22,6 +22,7 @@ const Filters = ({ table, toggleSidebar }) => {
         <NumberRangeFilter table={table} filterLabel="price" />
         <NumberRangeFilter table={table} filterLabel="sale_price" />
         <DateFilter table={table} filterLabel="createdAt" />
+        <DateFilter table={table} filterLabel="updatedAt" />
       </div>
       <div>
         <button
