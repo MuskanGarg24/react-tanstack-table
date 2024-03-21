@@ -8,6 +8,7 @@ import {
   getSortedRowModel,
   getGroupedRowModel,
   getFacetedUniqueValues,
+  getFacetedMinMaxValues,
 } from "@tanstack/react-table";
 import Tdata from "../data/data";
 import Sidebar from "./Sidebar";
@@ -90,6 +91,7 @@ const MainTable = () => {
     getSortedRowModel: getSortedRowModel(),
     getGroupedRowModel: getGroupedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
+    getFacetedMinMaxValues: getFacetedMinMaxValues(),
   });
 
   const toggleSideBarVisibility = (name) => {

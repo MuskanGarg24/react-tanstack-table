@@ -1,5 +1,6 @@
 import React from "react";
 import MultiSelectDropdownFilter from "./MultiSelectDropdownFilter";
+import NumberRangeFilter from "./NumberRangeFilter";
 
 const Filters = ({ table, toggleSidebar }) => {
   const clearFilters = () => {
@@ -37,6 +38,18 @@ const Filters = ({ table, toggleSidebar }) => {
             Subcategory
           </label>
           <MultiSelectDropdownFilter table={table} filterLabel="subcategory" />
+        </div>
+        <div className="my-5">
+          <label className="block text-sm font-medium text-gray-900 mb-2">
+            Price
+          </label>
+          <NumberRangeFilter table={table} filterLabel="price" />
+        </div>
+        <div className="my-5">
+          <label className="block text-sm font-medium text-gray-900 mb-2">
+            Sale Price
+          </label>
+          <NumberRangeFilter table={table} filterLabel="sale_price" />
         </div>
       </div>
       <div>

@@ -6,7 +6,7 @@ const Tdata = [
     subcategory: "Nutrition",
     createdAt: "2016-03-24T05:28:03.099+05:30",
     updatedAt: "2016-03-24T05:28:03.099+05:30",
-    price: 24.99,
+    price: 90,
     sale_price: 21.95,
   },
   {
